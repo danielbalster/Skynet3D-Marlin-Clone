@@ -6825,7 +6825,7 @@ inline void gcode_M303() {
   #endif
 }
 
-/**
+/** dbalster hacks **
  * M333: automatic bed measure
  * 
  * will issue a M29 auto home
@@ -6836,29 +6836,45 @@ inline void gcode_M303() {
  */
 
 inline void gcode_M333(){
-	gcode_G28();
+	//gcode_G28();
 	stepper.synchronize();
-  do_blocking_move_to(0,0,0.5,200);
 	
 	float x = stepper.get_axis_position_mm(A_AXIS);
 	float y = stepper.get_axis_position_mm(B_AXIS);
 	float z = stepper.get_axis_position_mm(C_AXIS);
-
-	SERIAL_ECHOPAIR(" X:",x);
-	SERIAL_ECHOPAIR(" Y:",y);
-	SERIAL_ECHOPAIR(" Z:",z);
-  SERIAL_ECHOLNPGM(" ");
-
-    do_blocking_move_to(100,100,0.5,200);
+	float home_x = x;
+	float home_y = y;
+	float home_z = 0.1;
 	
-	x = stepper.get_axis_position_mm(A_AXIS);
-	y = stepper.get_axis_position_mm(B_AXIS);
-	z = stepper.get_axis_position_mm(C_AXIS);
-
-	SERIAL_ECHOPAIR(" X:",x);
-	SERIAL_ECHOPAIR(" Y:",y);
-	SERIAL_ECHOPAIR(" Z:",z);
-  SERIAL_ECHOLNPGM("(auto bed measuring...)");
+	do_blocking_move_to(home_x,home_y,home_z,100);
+	x = home_x;
+	do 
+	{
+//		SERIAL_ECHOPAIR("->",x);
+//		SERIAL_ECHOPAIR(" ",(READ(Z_MIN_PIN)^Z_MIN_ENDSTOP_INVERTING)?"ON":"OFF");
+//		SERIAL_ECHOLNPGM(" ");
+		x -= 1.0f;
+		do_blocking_move_to(x,y,home_z,100);
+	}
+	while( (READ(Z_MIN_PIN)^Z_MIN_ENDSTOP_INVERTING) );
+	SERIAL_ECHOPAIR("X MIN=",x);
+	SERIAL_ECHOLNPGM(" ");
+	
+	do_blocking_move_to(home_x,home_y,home_z,100);
+	x = home_x;
+	do 
+	{
+//		SERIAL_ECHOPAIR("<-",y);
+//		SERIAL_ECHOPAIR(" ",(READ(Z_MIN_PIN)^Z_MIN_ENDSTOP_INVERTING)?"ON":"OFF");
+//		SERIAL_ECHOLNPGM(" ");
+		y -= 1.0f;
+		do_blocking_move_to(x,y,home_z,100);
+	}
+	while( (READ(Z_MIN_PIN)^Z_MIN_ENDSTOP_INVERTING) );
+	SERIAL_ECHOPAIR("Y MIN=",y);
+	SERIAL_ECHOLNPGM(" ");
+  do_blocking_move_to(home_x,home_y,home_z,100);
+	stepper.synchronize();
 //  
 }
 
