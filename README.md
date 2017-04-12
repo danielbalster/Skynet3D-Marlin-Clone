@@ -1,26 +1,26 @@
 # Skynet3D-Marlin-Clone
 
-Purpose:
-Add automatic bed measuring as a feature. idea is to use the ABL feature to detect the end of the heated bed in XY direction.
+This is my version of 
+- Marlin firmware project (https://marlinfw.org)
+- Modified by Skynet3D (https://facebook.com/Skynet3Dfirmwaredevelopment)
+- Thingiverse LCD12864 modification (http://www.thingiverse.com/thing:2103748)
 
-- you have a metallic/aluminium hotbed 
-- you have an inductive z endstop sensor
-- first it will home to the somewhat center
-- then it will crawl into -X direction until the Z-endstop sensor is triggered (because it's floating without hotbend below)
-- repeat for +X, -Y and +Y direction
-- gather all absolute positions
-- now we can calculate the somewhat exact extends of the hotbed and the correct center/origin/etc from it
+for my ANet A8 printer. Configuration is
+- Automatic Bed Levelling
+- LCD12864
+- check configuration.h
 
-FEATURE IS STILL WIP - DON'T USE
+# My contributions
+
+## Automatic Bed Measure
 
 
-1. download Skynet3D from facebook.com/Skynet3Dfirmwaredevelopment
-2. unzip
-3. open contained arduino IDE
-4. clone this repository into that folder
-5. open the sketch from this repository (Skynet3D-Marlin-Clone.ino)
-6. export compiled binary firmware (Skynet3D-Marlin-Clone.ino.sanguino.hex)
-7. copy to target system connected with your printer
-8. avrdude -v -p atmega1284p -c arduino -P /dev/ttyUSB0 -b 57600 -D -Uflash:w:Skynet3D-Marlin-Clone.ino.sanguino.hex:i
+# Installation
+
+- copy anet folder into your hardware folder (in your Arduino installtion root, ie c:\programs\arduino\hardware\anet)
+- open the sketch from the Skynet3D-Marlin-Clone folder
+- export compiled binary firmware (Skynet3D-Marlin-Clone.ino.sanguino.hex)
+- copy to target system connected with your printer
+- avrdude -v -p atmega1284p -c arduino -P /dev/ttyUSB0 -b 57600 -D -Uflash:w:Skynet3D-Marlin-Clone.ino.sanguino.hex:i
 
 done.
